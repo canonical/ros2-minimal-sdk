@@ -1,0 +1,74 @@
+_WORKSHOP_ROS_DISTRO="jazzy"
+
+# NOTE: we use apt-get instead of apt for non-interactive package installation.
+# apt will prompt services restart for some of the packages below which will
+# make the SDK installation hang forever.
+
+# Update package list
+apt-get -y update
+
+# Ensure the Ubuntu Universe repo are enabled
+apt-get -y install software-properties-common
+add-apt-repository universe
+
+# Make sure gpg is installed
+apt-get -y install gpg dirmngr
+
+if [ ! -d "${HOME}/.gnupg" ]; then
+  gpg -k
+fi
+
+# Download the ROS 2 GPG key
+if [ ! -f "/etc/apt/keyrings/ros-archive-keyring.gpg" ]; then
+  gpg --keyserver keyserver.ubuntu.com \
+    --no-default-keyring --keyring /etc/apt/keyrings/ros-archive-keyring.gpg \
+    --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+fi
+
+# Add ROS 2 repository to the sources list
+if [ ! -f "/etc/apt/sources.list.d/ros2.list" ]; then
+  # shellcheck source=/dev/null
+  UBUNTU_CODENAME=$(. /etc/os-release && echo "${UBUNTU_CODENAME}")
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu ${UBUNTU_CODENAME} main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+fi
+
+# Update package repository cache
+apt-get -y update
+
+# Upgrade the system
+apt-get -y upgrade
+
+# Install some development tools
+apt-get -y install ccache gdb lcov lld valgrind
+
+# Install ROS 2 development tools
+apt-get -y install ros-dev-tools
+
+# Those aren't part of ros-dev-tools/colcon-common-extensions
+apt-get -y install \
+  python3-colcon-argcomplete \
+  python3-colcon-alias \
+  python3-colcon-clean \
+  python3-colcon-mixin
+
+# Make sure a minimal ROS 2 (system) workspace is setup
+apt-get -y install \
+  ros-${_WORKSHOP_ROS_DISTRO}-ros-environment \
+  ros-${_WORKSHOP_ROS_DISTRO}-ros-workspace \
+  ros-${_WORKSHOP_ROS_DISTRO}-ament-index-cpp \
+  ros-${_WORKSHOP_ROS_DISTRO}-ament-index-python
+
+# Install ros2 run/launch as users probably would expect them
+apt-get -y install \
+  ros-${_WORKSHOP_ROS_DISTRO}-ros2run \
+  ros-${_WORKSHOP_ROS_DISTRO}-ros2launch
+
+# Initialise rosdep
+if [ ! -f "/etc/ros/rosdep/sources.list.d/20-default.list" ]; then
+  rosdep init
+fi
+
+# Add colcon autocompletion
+if [ ! -f "/etc/bash_completion.d/colcon-argcomplete" ]; then
+  cp "${SDK}/colcon-argcomplete" "/etc/bash_completion.d/colcon-argcomplete"
+fi

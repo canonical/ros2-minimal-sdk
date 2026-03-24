@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+
+# check colcon is installed and available
+if ! colcon -h &>/dev/null; then
+  workshopctl set-health --code="colcon-not-installed" error "colcon not installed"
+  exit
+fi
+
+# check /jazzy/setup.bash exists
+if [ ! -f /opt/ros/jazzy/setup.bash ]; then
+  workshopctl set-health --code="setupbash-missing" error "/opt/ros/jazzy/setup.bash not found"
+  exit
+fi
+
+# check environment is sourced
+OUTPUT=$(sudo -H -i -u workshop -- bash -c 'echo $ROS_DISTRO')
+
+if [ "$OUTPUT" == "jazzy" ]; then
+  workshopctl set-health okay
+else
+  workshopctl set-health --code="rosdistro-not-set" error
+fi

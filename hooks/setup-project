@@ -1,0 +1,57 @@
+_WORKSHOP_COLCON_CONFIG_BASE_PATH="${HOME}/.colcon"
+_WORKSHOP_PROJECT_BASE_PATH="/project"
+_WORKSHOP_ROS_DISTRO="jazzy"
+
+# Retrieve the project name
+if ! _WORKSHOP_PROJECT_NAME=$(git remote get-url origin | xargs --no-run-if-empty basename -s .git); then
+  _WORKSHOP_PROJECT_NAME="project"
+fi;
+
+# Create the ROS 2 workspace
+mkdir -p ~/workspace/src
+if [ ! -L "${HOME}/workspace/src/${_WORKSHOP_PROJECT_NAME}" ]; then
+  ln -s /project "${HOME}/workspace/src/${_WORKSHOP_PROJECT_NAME}"
+fi
+
+# Add setup script to .profile so that it is avail for both interactive and non-interactive shell
+if ! grep -q "source /opt/ros/${_WORKSHOP_ROS_DISTRO}/setup.bash" "${HOME}/.profile"; then
+  echo "
+# Source ROS 2
+if [ -f /opt/ros/${_WORKSHOP_ROS_DISTRO}/setup.bash ]; then
+  source /opt/ros/${_WORKSHOP_ROS_DISTRO}/setup.bash
+fi
+" >> "${HOME}/.profile"
+fi
+
+# Configure colcon's default dirs
+mkdir -p "${_WORKSHOP_COLCON_CONFIG_BASE_PATH}"
+
+if [ ! -f "${_WORKSHOP_COLCON_CONFIG_BASE_PATH}/defaults.yaml" ]; then
+  cp "${SDK}/colcon_defaults.yaml" "${_WORKSHOP_COLCON_CONFIG_BASE_PATH}/defaults.yaml"
+fi
+
+# Add colcon's default mixins
+if [ ! -d "${_WORKSHOP_COLCON_CONFIG_BASE_PATH}/colcon-mixin-repository" ] ; then
+  git -C "${_WORKSHOP_COLCON_CONFIG_BASE_PATH}" clone https://github.com/colcon/colcon-mixin-repository.git
+fi
+if [ ! -f "${_WORKSHOP_COLCON_CONFIG_BASE_PATH}/mixin_repositories.yaml" ] || ! grep -q "default:" "${_WORKSHOP_COLCON_CONFIG_BASE_PATH}/mixin_repositories.yaml"; then
+  colcon mixin add default "file://${_WORKSHOP_COLCON_CONFIG_BASE_PATH}/colcon-mixin-repository/index.yaml"
+fi
+colcon mixin update default
+
+# Update rosdep
+if [ -f "/etc/ros/rosdep/sources.list.d/20-default.list" ]; then
+  rosdep update --rosdistro=${_WORKSHOP_ROS_DISTRO}
+fi
+
+# Install project's dependencies
+if [ -d "${_WORKSHOP_PROJECT_BASE_PATH}" ]; then
+  if [ -n "$(ls -A ${_WORKSHOP_PROJECT_BASE_PATH})" ]; then
+    # Allow rosdep install to fail without aborting workshop launch
+    set +e
+    rosdep install --default-yes --ignore-packages-from-source \
+      --rosdistro=${_WORKSHOP_ROS_DISTRO} \
+      --from-paths ${_WORKSHOP_PROJECT_BASE_PATH}/.
+    set -e
+  fi
+fi

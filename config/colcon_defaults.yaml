@@ -1,0 +1,28 @@
+{
+  "": { "log-base": "/home/workshop/workspace/log" },
+  "build": {
+    "build-base": "/home/workshop/workspace/build",
+    "install-base": "/home/workshop/workspace/install",
+    "test-result-base": "/home/workshop/workspace/build",
+  },
+  "test": {
+    "build-base": "/home/workshop/workspace/build",
+    "install-base": "/home/workshop/workspace/install",
+    "test-result-base": "/home/workshop/workspace/build",
+  },
+  "test-result": {
+    "test-result-base": "/home/workshop/workspace/build",
+  },
+  "clean.packages": {
+    "build-base": "/home/workshop/workspace/build",
+    "install-base": "/home/workshop/workspace/install",
+    "log-base": "/home/workshop/workspace/log",
+    "test-result-base": "/home/workshop/workspace/build",
+  },
+  "clean.workspace": {
+    "build-base": "/home/workshop/workspace/build",
+    "install-base": "/home/workshop/workspace/install",
+    "log-base": "/home/workshop/workspace/log",
+    "test-result-base": "/home/workshop/workspace/build",
+  },
+}

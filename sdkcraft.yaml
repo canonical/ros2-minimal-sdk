@@ -1,0 +1,71 @@
+name: ros2
+title: The ROS 2 SDK
+base: ubuntu@24.04
+version: "0.1"
+summary: The strictly necessary ROS 2 development environment for your project.
+description: |
+  This SDK provides a minimal but complete ROS 2 development environment. It
+  includes essential build and dependency management tools while keeping the
+  footprint lean, allowing you to install additional packages as needed.
+
+  ## Key components
+
+  - `colcon`: ROS 2 build tool with extensions for clean, alias, and mixin
+    support. Configured to use a bind-mounted workspace that preserves build
+    artifacts across workshop updates (see `colcon-artefacts` plug).
+  - `rosdep`: Dependency manager that automatically installs package
+    dependencies for your project during SDK setup.
+  - `ros2`: Command-line tools including `ros2 run` and `ros2 launch`.
+  - Development tools: Includes `ccache` (compiler cache), `gdb` (debugger),
+    `lcov` (code coverage), and `valgrind` (memory analysis).
+
+  The exact ROS 2 distribution depends on the base image:
+
+  - Ubuntu 22.04: ROS 2 Humble
+  - Ubuntu 24.04: ROS 2 Jazzy
+
+  The SDK installs a minimal ROS 2 workspace with core tools. Full ROS 2 desktop
+  packages (e.g., `ros-jazzy-desktop`) are **not** included. You can install
+  additional ROS packages as needed, or use the
+  [`ros2-desktop`](https://github.com/canonical/sdks/tree/main/ros2-desktop) SDK
+  for a more complete desktop environment.
+
+  ## Setup actions
+
+  On launch, the SDK:
+
+  - Sources the ROS 2 environment automatically in the user shell.
+  - Runs `rosdep install` against your project in `/project/` to install
+    dependencies.
+license: LGPL-2.1
+platforms:
+  amd64:
+    build-on: [amd64]
+    build-for: [amd64]
+  arm64:
+    build-on: [amd64]
+    build-for: [arm64]
+
+parts:
+  ros2-part:
+    plugin: dump
+    source: config
+
+plugs:
+  ros-cache:
+    interface: mount
+    workshop-target: /home/workshop/.ros
+
+  colcon-artefacts:
+    interface: mount
+    workshop-target: /home/workshop/workspace
+
+  ccache-cache:
+    interface: mount
+    workshop-target: /home/workshop/.cache/ccache
+
+  gpu:
+    interface: gpu
+
+  desktop:
+    interface: desktop
