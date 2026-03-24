@@ -116,7 +116,7 @@ sudo -H -E -u ${_WORKSHOP_USER} bash -c "rosdep update --rosdistro=${_WORKSHOP_R
 
 # Install project's dependencies
 if [ -d "${_WORKSHOP_PROJECT_BASE_PATH}" ]; then
-  if [ ! -z "$(ls -A ${_WORKSHOP_PROJECT_BASE_PATH})" ]; then
+  if [ -n "$(ls -A ${_WORKSHOP_PROJECT_BASE_PATH})" ]; then
     sudo -H -i -u ${_WORKSHOP_USER} bash -c "rosdep install --default-yes --ignore-packages-from-source --rosdistro=${_WORKSHOP_ROS_DISTRO} --from-paths ${_WORKSHOP_PROJECT_BASE_PATH}/."
   fi
 fi
