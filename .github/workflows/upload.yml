@@ -1,0 +1,57 @@
+name: Build and Upload SDK
+
+on:
+  push:
+    branches:
+      - jazzy
+      - humble
+  schedule:
+    # Every Monday at 06:00 UTC.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  set-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.set.outputs.branches }}
+    steps:
+      - id: set
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "branches=[\"${{ github.ref_name }}\"]" >> $GITHUB_OUTPUT
+          else
+            echo 'branches=["jazzy","humble"]' >> $GITHUB_OUTPUT
+          fi
+
+  build-and-upload:
+    needs: set-matrix
+    runs-on:
+      - self-hosted
+      - linux
+      - jammy
+      - x64
+      - xlarge
+    strategy:
+      matrix:
+        branch: ${{ fromJSON(needs.set-matrix.outputs.branches) }}
+        platform: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Install sdkcraft
+        run: sudo snap install sdkcraft --edge --classic
+
+      - name: Pack SDK for ${{ matrix.platform }}
+        run: sdkcraft pack --build-for ${{ matrix.platform }}
+
+      - name: Upload SDK for ${{ matrix.platform }}
+        env:
+          SDKCRAFT_STORE_CREDENTIALS: ${{ secrets.SDKCRAFT_STORE_CREDENTIALS_STAGING }}
+        run: sdkcraft upload *.sdk --release latest/edge
