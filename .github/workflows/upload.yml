@@ -37,6 +37,6 @@ jobs:
     with:
       platforms: '["amd64","arm64"]'
       ref: ${{ matrix.branch }}
-      track: latest
+      track: ${{ matrix.branch }}
     secrets:
       SDKCRAFT_STORE_CREDENTIALS: ${{ secrets.SDKCRAFT_STORE_CREDENTIALS_STAGING }}
