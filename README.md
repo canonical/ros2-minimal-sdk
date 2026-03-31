@@ -16,7 +16,7 @@ name: ros2-jazzy
 base: ubuntu@24.04
 sdks:
   - name: ros2
-    channel: 24.04/edge
+    channel: jazzy/stable
 
 actions:
   build: |
