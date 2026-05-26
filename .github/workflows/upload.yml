@@ -5,6 +5,7 @@ on:
     branches:
       - jazzy
       - humble
+      - lyrical
   schedule:
     # Every Monday at 06:00 UTC.
     - cron: "0 6 * * 1"
@@ -25,7 +26,7 @@ jobs:
           if [[ "${{ github.event_name }}" == "push" ]]; then
             echo "branches=[\"${{ github.ref_name }}\"]" >> $GITHUB_OUTPUT
           else
-            echo 'branches=["jazzy","humble"]' >> $GITHUB_OUTPUT
+            echo 'branches=["jazzy","humble","lyrical"]' >> $GITHUB_OUTPUT
           fi
 
   build-and-upload:
