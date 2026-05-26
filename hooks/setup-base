@@ -1,4 +1,4 @@
-_WORKSHOP_ROS_DISTRO="jazzy"
+_WORKSHOP_ROS_DISTRO="lyrical"
 
 # NOTE: we use apt-get instead of apt for non-interactive package installation.
 # apt will prompt services restart for some of the packages below which will

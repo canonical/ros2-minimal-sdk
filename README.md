@@ -12,11 +12,11 @@ A minimal workshop:
 
 ```yaml
 # workshop.yaml
-name: ros2-jazzy
-base: ubuntu@24.04
+name: ros2-lyrical
+base: ubuntu@26.04
 sdks:
   - name: ros2-minimal
-    channel: jazzy/stable
+    channel: lyrical/stable
 
 actions:
   build: |
@@ -36,7 +36,7 @@ This demonstrates a basic ROS 2 build workflow with persistent build artefacts.
    `colcon` uses `~/workspace/src`, so no extra configuration is needed):
 
    ```bash
-   git clone https://github.com/ros2/examples -b jazzy
+   git clone https://github.com/ros2/examples -b lyrical
    workshop shell
    colcon build
    ```
@@ -89,8 +89,7 @@ standard ROS 2 installation.
 ### `colcon-artefacts`
 
 - Interface: `mount`
-- Workshop target: `/home/workshop/workspace` (24.04) or `/home/workshop/colcon`
-  (22.04)
+- Workshop target: `/home/workshop/workspace`
 - Purpose: Stores `colcon` build outputs, install directories, and logs so
   builds persist across workshop updates.
 
@@ -150,7 +149,7 @@ are welcome!
 
 ## License and copyright
 
-Copyright 2025 Canonical Ltd.
+Copyright 2026 Canonical Ltd.
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the
