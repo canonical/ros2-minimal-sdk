@@ -123,7 +123,7 @@ This SDK doesn't define any slots.
 - [ROS 2 official documentation](https://docs.ros.org/)
 - [Colcon documentation](https://colcon.readthedocs.io/)
 - [Canonical Robotics](https://canonical-robotics.readthedocs-hosted.com)
-- [Workshop documentation](https://canonical-workshop.readthedocs-hosted.com/latest/)
+- [Workshop documentation](https://ubuntu.com/workshop/docs/)
 
 ---
 
@@ -131,7 +131,7 @@ This SDK doesn't define any slots.
 
 - ROS community forum: [ROS Discourse](https://discourse.ros.org)
 - Workshop forum:
-  [Workshop Discourse](https://discourse.canonical.com/c/engineering/sdk/34)
+  [Discourse](https://discourse.ubuntu.com/)
 - Please review our
   [Code of Conduct](https://ubuntu.com/community/ethos/code-of-conduct) before
   participating.
