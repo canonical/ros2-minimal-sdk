@@ -1,6 +1,6 @@
 _WORKSHOP_COLCON_CONFIG_BASE_PATH="${HOME}/.colcon"
 _WORKSHOP_PROJECT_BASE_PATH="/project"
-_WORKSHOP_ROS_DISTRO="jazzy"
+_WORKSHOP_ROS_DISTRO="humble"
 
 # Retrieve the project name
 if ! _WORKSHOP_PROJECT_NAME=$(git remote get-url origin | xargs --no-run-if-empty basename -s .git); then
