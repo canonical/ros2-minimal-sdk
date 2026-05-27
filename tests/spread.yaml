@@ -1,0 +1,17 @@
+project: ros2-minimal
+
+path: /home/ubuntu/project
+
+backends:
+  lxd:
+    systems:
+      - ubuntu-24.04:
+          username: ubuntu
+          vm: true
+
+suites:
+  main/:
+    summary: Test the ros2-minimal SDK inside workshops
+    environment:
+      BASE: ubuntu@24.04
+      ROS_DISTRO: jazzy
