@@ -1,4 +1,4 @@
-name: ros2
+name: ros2-minimal
 title: The ROS 2 SDK
 base: ubuntu@24.04
 version: "0.1"
