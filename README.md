@@ -15,7 +15,7 @@ A minimal workshop:
 name: ros2-jazzy
 base: ubuntu@24.04
 sdks:
-  - name: ros2
+  - name: ros2-minimal
     channel: jazzy/stable
 
 actions:
