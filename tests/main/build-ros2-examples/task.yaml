@@ -8,17 +8,17 @@ prepare: |
   # that will serve as the workshop project
   git clone https://github.com/ros2/examples -b ${ROS_DISTRO} ${PROJECT}
   envsubst '${BASE}' <workshop.yaml.in >${PROJECT}/workshop.yaml
-  cd ${PROJECT} && workshop launch
+  workshop -p ${PROJECT} launch
 
 restore: |
-  cd ${PROJECT} && workshop remove || true
+  workshop -p ${PROJECT} remove || true
   rm -rf ${PROJECT}
 
 execute: |
-  workshop exec -- bash -lc 'colcon build'
-  workshop exec -- bash -lc 'colcon test'
-  workshop exec -- bash -lc 'colcon test-result --all'
+  workshop -p ${PROJECT} exec -- bash -lc 'colcon build'
+  workshop -p ${PROJECT} exec -- bash -lc 'colcon test'
+  workshop -p ${PROJECT} exec -- bash -lc 'colcon test-result --all'
 
 debug: |
-  workshop exec -- bash -lc 'colcon build --event-handlers console_direct+' || true
-  workshop tasks
+  workshop -p ${PROJECT} exec -- bash -lc 'colcon build --event-handlers console_direct+' || true
+  workshop -p ${PROJECT} tasks
