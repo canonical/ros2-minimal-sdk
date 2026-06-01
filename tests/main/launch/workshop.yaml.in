@@ -1,0 +1,4 @@
+name: test-ros2-minimal
+base: ${BASE}
+sdks:
+  - name: try-ros2-minimal

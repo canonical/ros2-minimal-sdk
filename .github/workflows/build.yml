@@ -1,0 +1,10 @@
+name: Build SDK
+
+on:
+  pull_request:
+    branches:
+      - jazzy
+
+jobs:
+  build:
+    uses: canonical/sdkcraft-actions/.github/workflows/build.yml@main
