@@ -1,4 +1,4 @@
-_WORKSHOP_ROS_DISTRO="jazzy"
+_WORKSHOP_ROS_DISTRO="lyrical"
 
 # NOTE: we use apt-get instead of apt for non-interactive package installation.
 # apt will prompt services restart for some of the packages below which will
@@ -21,8 +21,9 @@ fi
 # Download the ROS 2 GPG key
 if [ ! -f "/etc/apt/keyrings/ros-archive-keyring.gpg" ]; then
   gpg --keyserver keyserver.ubuntu.com \
-    --no-default-keyring --keyring /etc/apt/keyrings/ros-archive-keyring.gpg \
+    --no-default-keyring --keyring gnupg-ring:/etc/apt/keyrings/ros-archive-keyring.gpg \
     --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+  chmod 644 /etc/apt/keyrings/ros-archive-keyring.gpg
 fi
 
 # Add ROS 2 repository to the sources list

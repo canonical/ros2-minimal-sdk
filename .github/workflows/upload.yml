@@ -3,41 +3,19 @@ name: Build and Upload SDK
 on:
   push:
     branches:
-      - jazzy
-      - humble
+      - lyrical
   schedule:
     # Every Monday at 06:00 UTC.
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
-  cancel-in-progress: true
-
 jobs:
-  set-matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      branches: ${{ steps.set.outputs.branches }}
-    steps:
-      - id: set
-        run: |
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "branches=[\"${{ github.ref_name }}\"]" >> $GITHUB_OUTPUT
-          else
-            echo 'branches=["jazzy","humble"]' >> $GITHUB_OUTPUT
-          fi
-
   build-and-upload:
-    needs: set-matrix
-    strategy:
-      matrix:
-        branch: ${{ fromJSON(needs.set-matrix.outputs.branches) }}
     uses: canonical/sdkcraft-actions/.github/workflows/upload.yml@main
     with:
       platforms: '["amd64","arm64"]'
-      ref: ${{ matrix.branch }}
-      track: ${{ matrix.branch }}
+      ref: ${{ github.ref_name }}
+      track: ${{ github.ref_name }}
       risk: stable
     secrets:
       SDKCRAFT_STORE_CREDENTIALS: ${{ secrets.SDKCRAFT_STORE_CREDENTIALS_PROD }}

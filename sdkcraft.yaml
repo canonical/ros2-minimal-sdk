@@ -1,6 +1,6 @@
-name: ros2
+name: ros2-minimal
 title: The ROS 2 SDK
-base: ubuntu@24.04
+base: ubuntu@26.04
 version: "0.1"
 summary: The strictly necessary ROS 2 development environment for your project.
 description: |
@@ -23,9 +23,10 @@ description: |
 
   - Ubuntu 22.04: ROS 2 Humble
   - Ubuntu 24.04: ROS 2 Jazzy
+  - Ubuntu 26.04: ROS 2 Lyrical
 
   The SDK installs a minimal ROS 2 workspace with core tools. Full ROS 2 desktop
-  packages (e.g., `ros-jazzy-desktop`) are **not** included. You can install
+  packages (e.g., `ros-lyrical-desktop`) are **not** included. You can install
   additional ROS packages as needed, or use the
   [`ros2-desktop`](https://github.com/canonical/sdks/tree/main/ros2-desktop) SDK
   for a more complete desktop environment.
