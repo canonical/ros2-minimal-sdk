@@ -9,6 +9,7 @@ on:
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
+jobs:
   build-and-upload:
     uses: canonical/sdkcraft-actions/.github/workflows/upload.yml@main
     with:
